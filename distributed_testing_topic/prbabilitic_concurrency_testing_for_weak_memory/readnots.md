@@ -28,6 +28,30 @@ The above explanation is very similary to the Weak Memory. Suppose there are int
 
 There is a little different in C/C++'s Concurrency in C11. (Trying to understand the C/C++'s Memory strategy by refering to the Java's inner defined Atomic Variables like AtomicInteger ...).
 
+### Probabilistic Concurrency Testing (PCT)
+
+A randomized concurrency testing algorithm designed for SC(sequence-consistency) programs. 
+It provides strong theoretical guarantees on the probability of detecting concurrency buts. 
+
+Given bug depth d, PCT randomly generates a test execution that encodes a particular ordering of events with d scheduling constraints. 
+
+### Native Random Concurrency Testing 
+A native random concurrency testing algorithm chooses the next event to schedule from the set of all enabled events at each scheduling choice.
+
+Such an algorithm detects the violation in the example with a probability of only 1/2^k where the k is the number of scheduling choices. 
+To detect it, it must choose the event in the first thread among the 2 enabled events for all k scheduling choices in the execution. 
+
+### Difference between PCT and Native Random Concurrency Testing 
+PCT differs from native random testing by sampling an execution from the set of executions with d ordering constraints. 
+
+It guarantees a lower bound on the probability of detecting a bug by a test execution with a probability of at least 1/(t*k^(d-1)) where the t is the 
+number of threads, and the k is the numver of program events. And the d is the bug depth. 
+
+### What's PCT algorithm relies on?
+The PCT algorithm relies on the ordering constraints and the interleaving semantics of sequential consistency. 
+
+More specially, it relies on the notion of bug depth that is defined as the minimum number of scheduling constraints that are sufficient to find the bug. 
+
 
 
 
