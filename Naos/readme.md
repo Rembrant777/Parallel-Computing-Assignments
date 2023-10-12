@@ -1,15 +1,23 @@
 # Naos: Serialization-free RDMA networking in Java 
 
-## Background
+## Terminology 
+* OSD: Object Serialization/Deserialization 
 
-## Main Contribution 
+## Background && Main Contribution 
+This paper presents Naos, a JVM-based technique bypassing heap serialization boundaries that allows objects to be directly sent from a local heap to a remote one with minimal CPU involvement and over RDMA networks. 
 
-## Research Questions 
+Because data exchanges via the JVM heap directly via RDMA protocol, so there is no need to do the serialization/deserialization when send/receive network messages. And we know that serialization/deserialization cost lots of CPU resources, so when use Naos the CPU resource can be saved. 
 
-## Experiments 
-### Experiment Design 
+| Research Questions         | Conclusion                  | Support Experiment Statistics | Experimental Design        |
+|----------------------------|-----------------------------|------------------------------|---------------------------|
+| - Question 1               | - Summary of Findings       | - Sample Size                | - Research Hypothesis     |
+| - Question 2               | - Key Insights              | - Data Collection Method     | - Variables               |
+| - Question 3               | - Implications              | - Data Analysis Techniques  |   - Independent Variables |
+| ...                        | ...                         | - Results and Findings      |   - Dependent Variables   |
+|                            |                             |                              | - Data Collection and Instruments |
+| ...                        | ...                         | ...                          | ...                       |
 
-## Future Work 
+
 
 ## Summary 
 
