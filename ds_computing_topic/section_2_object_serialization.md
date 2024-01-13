@@ -45,14 +45,58 @@ The accelerator and the serialization format are co-designed which means develop
 
 However, it at the expense of requiring specilized hardware and sacrifice the universality. 
 
-* Accelerated OSD trad off
+* Accelerated OSD trade off
 1. require specilized hardware, sacrifice the universality. 
 2. co-design acelerator and serialize strategy increase maintenance and update costs. 
 
 * Compare to Accelerated OSD libraries (Cereal, Optimus Prime), Naos advantages
 Do not need any hardware specialized (well RDMA and the Infinbind also means expensive hardware to me :) )
 
+### Zero-transformation OSD 
 
+* What Zero-transformation OSD resolve ? 
+By dropping portability, the Zero-transformation OSD library manages to partially avoid data transformation and object construction by serializing Java objects in their own specialized  JVM formats. 
+
+Which means the serialized data objects are written to communication buffers in the same binary format as they stored in the heap.(zero-copy)
+
+* Similarity between Zero-transformation OSD(Skyway) and Naos 
+Like Skyway, Naos sends objects in the JVM heap format, assuming that communicating parties run on the same JVM software. 
+
+* Difference between Zero-transformation OSD(Skyway) and Naos
+Unlike Skyway, Naos is not a serialization library that requiring to copy objects between communication buffers and JVM heap.
+
+* Zero-transfrormation OSD trade off 
+1. Dropping the portability to exchange performance behavior during data serialize OSD period. 
+2. Zero-transformation OSD Skyway's memory management prevents the use of RDMA networking. 
+
+* Compare to Zero-transformation OSD library, Naos advantages 
+1. Completely remove the process of serialization/deserializetion. Objects do not need to move between kernel buffern and JVM heap.
+2. Do not take care of memory management. Instead by using RDMA to transfer data objects that are held in the JVM heap directly.  
+
+### What Naos is not? and what Naos covers?  
+* Naos is not: 
+Naos is not a serilization library, it does not have serialize and deserialize implementation. 
+Naos also cannot replace the OSD libraries in the systems that do not use the OSD for communication(like writing objects to disk). 
+
+* Naos covers
+Naos only covers end-to-end transfers via replacing the memory-JVM heap copy by RDMA-JVM heap copy.
+
+
+### What Naos this library can be used ? and what Naos this library cannot be adopted ? 
+* Can be used
+Since Naos only covers end-to-end transfers, for future systems that want to take advantage of serialization-free zero-copy RDMA networking. 
+
+* Cannot be adopted
+But some of several exsiting Java framework the main obstable to using Naos is that some of these systems do not consider the possibility to 
+send objects without serialization. 
+
+Especially Hadoop and Spark those frameworks any associated interfaces are not remain and design for data transfer without serialziation/deserialization. 
+
+Like Spark and Hadoop completely decouple serialization from communication: 
+their serialization modules are designed to serialize objects only to files.
+their shuffle modules are design to communicate only files. 
+
+Such file-centric design simplifies inner-node communication. However, it makes integrating Naos very difficult. 
 
 
 
